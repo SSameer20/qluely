@@ -204,6 +204,110 @@ export default function QluelyLanding() {
         </div>
       </section>
 
+      {/* --- Pricing Section --- */}
+      <section className="py-16 sm:py-24 px-4 sm:px-6 bg-[#F8F9FA]">
+        <div className="max-w-6xl mx-auto">
+          <motion.h2
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            transition={{ duration: 0.6 }}
+            className="text-center text-3xl sm:text-4xl md:text-5xl mb-10 sm:mb-16 text-[#1A1F36] px-2"
+          >
+            Choose Your Plan
+          </motion.h2>
+
+          <div className="grid grid-cols-1 md:grid-cols-2 gap-6 sm:gap-8 max-w-4xl mx-auto">
+            {/* Free Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.1 }}
+              className="bg-white border border-gray-200 rounded-2xl p-6 sm:p-8 text-center"
+            >
+              <h3 className="text-2xl sm:text-3xl font-bold text-[#1A1F36] mb-4">
+                Free
+              </h3>
+              <p className="text-[#64748B] mb-6">
+                Basic features for casual users
+              </p>
+              <div className="text-4xl sm:text-5xl font-bold text-[#7C3AED] mb-6">
+                $0
+              </div>
+              <ul className="text-left text-[#64748B] mb-8 space-y-2">
+                <li>• Live notes for 1 meeting/month</li>
+                <li>• Basic summaries</li>
+                <li>• Email follow-ups</li>
+              </ul>
+              <button
+                className="w-full bg-gray-200 text-gray-600 px-6 py-3 rounded-full text-lg font-medium"
+                disabled
+              >
+                Current Plan
+              </button>
+            </motion.div>
+
+            {/* Pro Plan */}
+            <motion.div
+              initial={{ opacity: 0, y: 30 }}
+              whileInView={{ opacity: 1, y: 0 }}
+              viewport={{ once: true }}
+              transition={{ duration: 0.5, delay: 0.2 }}
+              className="bg-white border-2 border-[#7C3AED] rounded-2xl p-6 sm:p-8 text-center relative"
+            >
+              <div className="absolute -top-4 left-1/2 transform -translate-x-1/2 bg-[#7C3AED] text-white px-4 py-1 rounded-full text-sm font-medium">
+                Most Popular
+              </div>
+              <h3 className="text-2xl sm:text-3xl font-bold text-[#1A1F36] mb-4">
+                Pro
+              </h3>
+              <p className="text-[#64748B] mb-6">
+                Unlimited AI-powered meetings
+              </p>
+              <div className="text-4xl sm:text-5xl font-bold text-[#7C3AED] mb-2">
+                ₹749
+              </div>
+              <p className="text-[#64748B] mb-6">per month (INR)</p>
+              <ul className="text-left text-[#64748B] mb-8 space-y-2">
+                <li>• Unlimited meetings</li>
+                <li>• Real-time answers</li>
+                <li>• Undetectable overlay</li>
+                <li>• Smart follow-ups</li>
+                <li>• CRM integrations</li>
+              </ul>
+              <button
+                onClick={async () => {
+                  try {
+                    // TODO: Replace with actual user ID from authentication
+                    const userId = 'user_123'; // Temporary placeholder
+                    
+                    const response = await fetch('/api/checkout', {
+                      method: 'POST',
+                      headers: { 'Content-Type': 'application/json' },
+                      body: JSON.stringify({ plan: 'pro', userId }),
+                    });
+                    const data = await response.json();
+                    if (data.checkout_url) {
+                      window.location.href = data.checkout_url;
+                    } else {
+                      console.error('Checkout error:', data);
+                      alert('Error starting checkout');
+                    }
+                  } catch (error: any) {
+                    console.error('Error starting checkout', error);
+                    alert('Error starting checkout: ' + (error?.message || error));
+                  }
+                }}
+                className="w-full bg-linear-to-r from-[#7C3AED] to-[#EC4899] text-white px-6 py-3 rounded-full text-lg font-medium hover:shadow-[0_0_25px_rgba(124,58,237,0.4)] transition-all transform hover:scale-105"
+              >
+                Upgrade to Pro
+              </button>
+            </motion.div>
+          </div>
+        </div>
+      </section>
+
       <footer className="py-12 sm:py-20 px-4 sm:px-6 border-t border-gray-200 bg-white">
         <div className="max-w-4xl mx-auto">
           <div className="text-center mb-10 sm:mb-12">

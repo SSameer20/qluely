@@ -1,0 +1,68 @@
+// This is your Prisma schema file,
+// learn more about it in the docs: https://pris.ly/d/prisma-schema
+
+// Looking for ways to speed up your queries, or scale easily with your serverless or edge functions?
+// Try Prisma Accelerate: https://pris.ly/cli/accelerate-init
+
+generator client {
+  provider = "prisma-client"
+  output   = "../app/_prisma"
+}
+
+datasource db {
+  provider = "postgresql"
+}
+
+model User {
+  id        String   @id @default(uuid())
+  username  String
+  email     String   @unique
+  password  String
+
+  // referral code owned by this user (1–1)
+  referral  Referral?
+
+  // account for this user (1–1)
+  account   Account?
+
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Referral {
+  id        String   @id @default(uuid())
+  code      String   @unique
+  bonus     Int      @default(0)
+
+  // owner of this referral code
+  ownerId   String   @unique
+  owner     User     @relation(fields: [ownerId], references: [id])
+
+  // accounts that used this referral code (1–many)
+  accounts  Account[]
+
+  createdAt DateTime @default(now())
+}
+
+model Account {
+  id                  String      @id @default(uuid())
+  userId              String      @unique
+  user                User        @relation(fields: [userId], references: [id])
+
+  // referral used during signup (optional)
+  referralId          String?
+  referral            Referral?   @relation(fields: [referralId], references: [id])
+
+  type                AccountType @default(FREE)
+  requestLimit        Int?
+  monthlyRequestCount Int         @default(0)
+  currentPeriodStart  DateTime    @default(now())
+
+  createdAt           DateTime    @default(now())
+  updatedAt           DateTime    @updatedAt
+}
+
+enum AccountType {
+  FREE
+  PREMIUM
+}
